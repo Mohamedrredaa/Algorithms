@@ -1,0 +1,276 @@
+/******************************************************************************
+
+                              Online C++ Compiler.
+               Code, Compile, Run and Debug C++ program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <iostream>
+
+using namespace std;
+void insertion_sort(int arr[] , int n){
+int key, j;
+ for (int i = 1;i<n;i++){
+     j = i-1; key = arr[i];
+     while(j>= 0 &&arr[j]> key){
+         arr[j+1] = arr[j];
+         j--;
+         
+            }
+     arr[j + 1] = key;
+         }
+}
+void Bubble_sort(int arr[] , int n){int temp;
+    for(int i = 0;i<n-1;i++){
+        for(int j = 0;j<n-i ; j++)
+            if(arr[j] > arr[j+1]){
+                temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+            }
+    }
+}
+ void printArray(int arr[], int n){
+	for (int i = 0; i < n; i++)
+		cout << arr[i] << " ";
+	cout << endl;
+}
+void selection_sort(int arr[] , int n){
+    int temp;int ind;
+    for(int i = 0 ; i<n-1 ; i++){
+        int min = i;
+        for(int j = i+1 ; j< n; j++){
+            if(arr[min] < arr[j]){
+                min = j;
+                temp = arr[j];
+                arr[i]  = arr[min];
+                arr[min] = temp;
+            }
+        }
+    }
+}
+void selectionSort(int arr[], int n){
+	int minIdx;                    //0  1  2  3  4  5
+	for (int i = 0; i < n - 1; i++){//60 40 50 30 10 20
+		minIdx = i;//4
+		for (int j = i + 1; j < n; j++)
+			if (arr[j] > arr[minIdx])
+				minIdx = j;
+	            swap(arr[minIdx], arr[i]);
+	}
+}  
+int Fibo(int n){
+    if( n == 0 || n == 1)
+        return n;
+    else
+        return Fibo(n-2) + Fibo(n-1);
+
+}
+void merge(int arr[], int l, int m, int r){//m = l + (r - l) / 2;       
+	int i, j, k;
+	int n1 = m - l + 1;// First subarray is arr[l..m]                    
+	int n2 = r - m;// Second subarray is arr[m+1..r]                     
+	int *L=new int[n1], *R=new int[n2];
+	
+	for (i = 0; i < n1; i++)
+		L[i] = arr[l + i];
+	for (j = 0; j < n2; j++)
+		R[j] = arr[m + 1 + j];
+
+	i = j = 0; 
+	k = l;
+
+	while (i < n1 && j < n2)
+	{
+		if (L[i] <= R[j])
+		{
+			arr[k] = L[i];
+			i++;
+		}
+		else
+		{
+			arr[k] = R[j];
+			j++;
+		}
+		k++;
+	}
+
+	while (i < n1)
+	{
+		arr[k] = L[i];
+		i++;
+		k++;
+	}
+
+	while (j < n2)
+	{
+		arr[k] = R[j];
+		j++;
+		k++;
+	}
+}
+void mergeSort(int arr[], int l, int r){
+	if (l < r)
+	{
+		int m = l + (r - l) / 2;
+        
+		mergeSort(arr, l, m);
+		mergeSort(arr, m + 1, r);
+
+		merge(arr, l, m, r);
+	}
+}
+int partition1(int arr[], int l, int h){
+	int p = arr[l];
+	int i = l;
+	int j = h;
+	while (i < j)
+	{
+		do
+		{
+			i++;
+		} while (arr[i] <= p);
+		do
+		{
+			j--;
+		} while (arr[j] > p);
+
+		if (i < j)
+			swap(arr[i], arr[j]);
+	}
+	swap(arr[l], arr[j]);
+	return j;
+}
+int partition2(int arr[], int iBegin, int jEnd) {
+	int i = iBegin;
+	int j = jEnd;
+	int pivLoc = i;
+	while (true)
+	{
+		while (arr[pivLoc] <= arr[j] && pivLoc != j)
+		{
+			j--;
+		}
+		if (pivLoc == j)
+			break;
+		else if (arr[pivLoc] > arr[j])
+		{
+			swap(arr[j], arr[pivLoc]);
+			pivLoc = j;
+		}
+
+		while (arr[pivLoc] >= arr[i] && pivLoc != i)
+		{
+			i++;
+		}
+		if (pivLoc == i)
+			break;
+		else if (arr[pivLoc] < arr[i])
+		{
+			swap(arr[i], arr[pivLoc]);
+			pivLoc = i;
+		}
+	}
+	return pivLoc;
+}
+void quickSort1(int arr[], int l, int h){
+
+	if (l < h) {
+		int piv = partition1(arr, l, h);
+		quickSort1(arr, l, piv);
+		quickSort1(arr, piv + 1, h);
+	}
+
+}
+void quickSort2(int arr[], int l, int h){
+
+	if (l < h) {
+		int piv = partition2(arr, l, h);
+		quickSort2(arr, l, piv - 1);
+		quickSort2(arr, piv + 1, h);
+	}
+
+}
+void heapify(int arr[],int n,int i){
+int l=2*i+1;
+int r=2*i+2;
+int max=i;
+if(l<n&&arr[l]<arr[max])
+    max=l;
+if(r<n&&arr[r]<arr[max])
+    max=r;
+if(max != i){
+    swap(arr[i],arr[max]);
+    heapify(arr,n,max);
+    }
+}
+void buildHeap(int arr[],int n){
+	for (int i = n / 2 - 1; i >= 0; i--)
+		heapify(arr, n, i);
+}
+void heapSort(int arr[], int n){
+	buildHeap(arr, n);
+	for (int i = n-1; i >=0; i--)
+	{
+		swap(arr[0], arr[i]);
+		heapify(arr, i, 0);
+	}
+}
+int linearSearch(int arr[], int n, int key){
+	for (int i = 0; i < n; i++)
+	{
+		if (arr[i] == key)
+			return i;
+	}
+	return-1;
+}
+int binarySearch(int arr[], int l, int h, int element)
+{
+	while (l <= h) {
+		int m = (l + h) / 2;//both=>m = l + (r - l) / 2 both=>m = (2 l + r -l)/2
+		if (arr[m] == element)
+			return m;
+		if (arr[m] > element)
+		h = m - 1;
+		else
+		l = m + 1;
+	}
+	return -1;
+}
+int binarySearchRec(int arr[], int l, int h, int element)
+{
+	if (h >= l) {
+		int mid = (l + h) / 2;
+
+		if (arr[mid] == element)
+			return mid;
+
+		if (arr[mid] > element)
+			return binarySearch(arr, l, mid - 1, element);
+
+		return binarySearch(arr, mid + 1, h, element);
+	}
+	return -1;
+}
+
+int main()
+{
+
+		int arr[] = { 80 , 90 ,60 ,30 ,50 ,70 ,40 };
+		int n = sizeof(arr) / sizeof(arr[0]);//   28/4=7
+        //cout<<Fibo(6)<<endl;
+		//insertionSort(arr, n);
+		//insertion_sort(arr, n);
+		//Bubble_sort(arr,n);
+		//selection_sort(arr,n);
+		//mergeSort(arr,0,6);
+		//quickSort2(arr,0,6);
+		//heapSort(arr,n);
+		//printArray(arr, n);
+		cout<<binarySearch(arr,0,n-1,90);
+		
+
+	return 0;
+
+}
